@@ -1,0 +1,19 @@
+{
+  "module": {
+    "name": "harmony_httpserver",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+      "2in1"
+    ],
+    "requestPermissions":[
+      {
+        "name": "ohos.permission.INTERNET",
+        "usedScene": {
+          "when":"always"
+        }
+      }
+    ]
+  }
+}
