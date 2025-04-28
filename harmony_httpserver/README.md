@@ -20,6 +20,8 @@
 import { HttpRequest, HttpResponse, httpServer } from '@webabcd/harmony-httpserver'
 import { BusinessError } from '@kit.BasicServicesKit';
 import { http } from '@kit.NetworkKit';
+import { buffer, util } from '@kit.ArkTS';
+import { LengthMetrics } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -51,20 +53,35 @@ struct Index {
 
     // 处理本地 http 请求
     httpServer.handleHttpRequest((httpRequest:HttpRequest) => {
-      // 自定义 http 响应数据
-      let httpResponse: HttpResponse = {
-        result: `我是自定义响应数据，当前的 http 请求的 url 为 ${httpRequest.url}`,
+
+      let httpResponse = { } as HttpResponse
+
+      let responseString = `我是自定义响应数据\n` +
+        `request url: ${httpRequest.url}\n` +
+        `request protocol: ${httpRequest.protocol}\n` +
+        `request method: ${httpRequest.method}\n` +
+        `request headers: ${Object.entries(httpRequest.headers).map(p => `${p[0]}:${p[1]}`).join(', ')}\n` +
+        `request body: ${httpRequest.body}\n`
+
+      if (httpRequest.method == 'GET') {
+        // 如果是 get 请求，则响应自定义的 string 数据
+        httpResponse.result = responseString
+      } else if (httpRequest.method == 'POST') {
+        // 如果是 post 请求，则响应自定义的 ArrayBuffer 数据
+        httpResponse.result = stringToArrayBuffer(responseString)
+      } else {
+        httpResponse.result = ''
+        httpResponse.statusCode = 404
       }
+
       return httpResponse
     })
-
-    setInterval(() => {
-      this.requestDemo()
-    }, 1000)
   }
 
-  requestDemo() {
+  // 通过 get 请求 http server，并获取服务端响应的 string 数据
+  requestDemo1() {
     if (this.port == -1) {
+      this.message += '本地 http server 未启动\n'
       return
     }
 
@@ -76,11 +93,38 @@ struct Index {
       url,
       {
         method: http.RequestMethod.GET,
-        expectDataType: http.HttpDataType.STRING,
       },
       (err: BusinessError, data: http.HttpResponse) => {
         if (!err) {
-          this.message += `result: ${JSON.stringify(data.result)}\n`
+          this.message += `response: ${data.result}\n`
+        } else {
+          this.message += `error: ${JSON.stringify(err)}\n`
+        }
+        httpRequest.destroy()
+      }
+    )
+  }
+
+  // 通过 post 请求 http server，并获取服务端响应的 ArrayBuffer 数据
+  requestDemo2() {
+    if (this.port == -1) {
+      this.message += '本地 http server 未启动\n'
+      return
+    }
+
+    // 构造本地请求的 url 地址
+    let url = `http://127.0.0.1:${this.port}/api?${Math.random()}`
+
+    let httpRequest = http.createHttp()
+    httpRequest.request(
+      url,
+      {
+        method: http.RequestMethod.POST,
+        extraData: "post data"
+      },
+      (err: BusinessError, data: http.HttpResponse) => {
+        if (!err) {
+          this.message += `response: ${arrayBufferToString(data.result as ArrayBuffer)}\n`
         } else {
           this.message += `error: ${JSON.stringify(err)}\n`
         }
@@ -100,10 +144,38 @@ struct Index {
         this.stopHttpServer()
       })
 
+      Button() {
+        Text('通过 get 请求 http server\n并获取服务端响应的 string 数据')
+          .textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
+      }
+      .padding(10)
+      .onClick(() => {
+        this.requestDemo1()
+      })
+
+      Button() {
+        Text('通过 post 请求 http server\n并获取服务端响应的 ArrayBuffer 数据')
+          .textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
+      }
+      .padding(10)
+      .onClick(() => {
+        this.requestDemo2()
+      })
+
       Text(this.message)
     }
-    .width('95%')
+    .width('100%')
   }
+}
+
+function stringToArrayBuffer(str: string): ArrayBuffer {
+  const encoder = new util.TextEncoder();
+  const uint8Array = encoder.encodeInto(str);
+  return uint8Array.buffer;
+}
+
+function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
+  return buffer.from(arrayBuffer).toString('utf-8')
 }
  ```
 

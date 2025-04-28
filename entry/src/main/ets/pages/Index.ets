@@ -126,7 +126,8 @@ struct Index {
       })
 
       Button() {
-        Text('通过 get 请求 http server\n并获取服务端响应的 string 数据').textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
+        Text('通过 get 请求 http server\n并获取服务端响应的 string 数据')
+          .textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
       }
       .padding(10)
       .onClick(() => {
@@ -134,7 +135,8 @@ struct Index {
       })
 
       Button() {
-        Text('通过 post 请求 http server\n并获取服务端响应的 ArrayBuffer 数据').textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
+        Text('通过 post 请求 http server\n并获取服务端响应的 ArrayBuffer 数据')
+          .textAlign(TextAlign.Center).fontColor(Color.White).lineSpacing(LengthMetrics.vp(10))
       }
       .padding(10)
       .onClick(() => {
