@@ -7,11 +7,14 @@ import { http } from '@kit.NetworkKit';
 struct Index {
 
   @State message: string = ''
+
+  // 本地的 http server 的端口号（要求要大于等于 1024）
   port: number = -1
 
   startHttpServer() {
     if (this.port == -1) {
-      // port 需要大于等于 1024
+      // 指定端口号，并启动本地 http server
+      // 返回值为真实监听的端口号
       httpServer.start(8080, (err: BusinessError, port: number) => {
         this.port = port
         this.message += `port: ${port}\n`
@@ -20,13 +23,16 @@ struct Index {
   }
 
   stopHttpServer() {
+    // 停止本地 http server
     httpServer.stop()
     this.port = -1
   }
 
   aboutToAppear(): void {
 
+    // 处理本地 http 请求
     httpServer.handleHttpRequest((httpRequest:HttpRequest) => {
+      // 自定义 http 响应数据
       let httpResponse: HttpResponse = {
         result: `我是自定义响应数据，当前的 http 请求的 url 为 ${httpRequest.url}`,
       }
@@ -43,6 +49,7 @@ struct Index {
       return
     }
 
+    // 构造本地请求的 url 地址
     let url = `http://127.0.0.1:${this.port}/api?${Math.random()}`
 
     let httpRequest = http.createHttp()
