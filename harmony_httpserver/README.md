@@ -1,7 +1,7 @@
 # @webabcd/harmony-httpserver
 用于在鸿蒙系统中启动本地 http Server，并为指定的本地 http 请求提供自定义的响应内容
 
-## 简介与推荐
+## 简介
 [harmony-httpserver](https://ohpm.openharmony.cn/#/cn/detail/@webabcd%2Fharmony-httpserver)
 一款简单易用的本地 http server 库，可以方便地根据不同的本地 http 请求响应不同的自定义数据
 
