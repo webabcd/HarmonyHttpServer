@@ -8,7 +8,7 @@ export interface HttpRequest {
 
 export interface HttpResponse {
   headers?: Record<string, string>
-  result: string
+  result: string | ArrayBuffer
   statusCode?: number
 }
 
