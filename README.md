@@ -14,6 +14,7 @@
 | start | 启动本地 http server |
 | stop | 停止本地 http server |
 | handleHttpRequest | 处理指定的请求，并响应指定的数据 |
+| enableLog | 是否打印日志 |
 
 ## 示例代码
 ```
