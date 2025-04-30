@@ -1,7 +1,7 @@
 import { socket } from "@kit.NetworkKit";
 import { AsyncCallback, BusinessError } from "@kit.BasicServicesKit";
 import { buffer } from "@kit.ArkTS";
-import { RequestAndResponse, HttpRequest, HttpResponse, HttpStatus } from "./Model";
+import { RequestAndResponse, HttpRequest, HttpResponse, HttpStatus, RequestAndResponseAsync } from "./Model";
 import { Helper } from "./Helper";
 import { log, model } from '@webabcd/harmony-utils'
 
@@ -60,15 +60,21 @@ class HttpServer {
       return
     }
 
+    this.tcpServer.off("connect")
     this.tcpServer.on("connect", (client: socket.TCPSocketConnection) => {
 
-      client.on("message",  (value: socket.SocketMessageInfo)  => {
+      client.on("message",  async (value: socket.SocketMessageInfo) => {
 
         let requestData = buffer.from(value.message).toString('utf-8')
         let httpRequest = Helper.parseHttpRequest(requestData)
         log.i(`收到请求 ${httpRequest.url}`)
-        if (this.requestAndResponse) {
-          let httpResponse = this.requestAndResponse(httpRequest)
+        if (this.requestAndResponse || this.requestAndResponseAsync) {
+          let httpResponse = {} as HttpResponse
+          if (this.requestAndResponse) {
+            httpResponse = this.requestAndResponse(httpRequest)
+          } else if (this.requestAndResponseAsync) {
+            httpResponse = await this.requestAndResponseAsync(httpRequest)
+          }
           Helper.adjustHttpResponse(httpResponse)
 
           // 需要响应的 status line 和 headers
@@ -120,17 +126,26 @@ class HttpServer {
   /**
    * 停止本地 http server
    */
-  public async stop() {
+  public stop() {
     this.tcpServer.off("connect")
     log.i(`停止本地 http server`)
   }
 
   requestAndResponse: RequestAndResponse | undefined
+  requestAndResponseAsync: RequestAndResponseAsync | undefined
   /**
-   * 处理本地 http 请求
+   * 处理本地 http 请求（同步）
    */
   public handleHttpRequest(requestAndResponse: RequestAndResponse) {
+    this.requestAndResponseAsync = undefined
     this.requestAndResponse = requestAndResponse
+  }
+  /**
+   * 处理本地 http 请求（异步）
+   */
+  public handleHttpRequestAsync(requestAndResponseAsync: RequestAndResponseAsync) {
+    this.requestAndResponse = undefined
+    this.requestAndResponseAsync = requestAndResponseAsync
   }
 }
 

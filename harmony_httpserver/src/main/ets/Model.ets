@@ -13,6 +13,7 @@ export interface HttpResponse {
 }
 
 export type RequestAndResponse = (httpRequest:HttpRequest) => HttpResponse;
+export type RequestAndResponseAsync = (httpRequest:HttpRequest) => Promise<HttpResponse>;
 
 export const HttpStatus: Record<number, string> = {
   // 1xx Informational
