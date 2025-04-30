@@ -3,13 +3,12 @@
   "version": "1.0.1",
   "description": "用于在鸿蒙系统中启动本地 http Server，并为指定的本地 http 请求提供自定义的响应内容",
   "homepage": "https://gitee.com/webabcd",
-  "repository": "https://gitee.com/webabcd/HarmonyHttpServer.git",
+  "repository": "https://gitee.com/webabcd/HarmonyHttpServer",
   "main": "Index.ets",
   "author": "webabcd",
   "license": "Apache-2.0",
   "dependencies": {},
   "keywords": [
-    "工具类",
     "服务",
     "http",
     "server",
@@ -17,7 +16,6 @@
     "http 服务器"
   ],
   "tags": [
-    "工具类",
     "服务",
     "http",
     "server",

@@ -61,14 +61,4 @@ export class Helper {
       }
     }
   }
-
-  public static stringToArrayBuffer(str: string): ArrayBuffer {
-    const encoder = new util.TextEncoder();
-    const uint8Array = encoder.encodeInto(str);
-    return uint8Array.buffer;
-  }
-
-  public static arrayBufferToString(arrayBuffer: ArrayBuffer): string {
-    return buffer.from(arrayBuffer).toString('utf-8')
-  }
 }

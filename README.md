@@ -9,13 +9,13 @@
 `ohpm i @webabcd/harmony-httpserver`
 
 ## API详解
-| HttpServer方法 | 介绍 |
-| --- | --- |
+| 方法 | 介绍 |
+| -- | --- |
 | start | 启动本地 http server |
 | stop | 停止本地 http server |
 | handleHttpRequest | 处理指定的请求，并响应指定的数据  |
 
-## 使用说明与示例代码
+## 示例代码
 ```
 import { HttpRequest, HttpResponse, httpServer } from '@webabcd/harmony-httpserver'
 import { BusinessError } from '@kit.BasicServicesKit';
@@ -177,4 +177,4 @@ function stringToArrayBuffer(str: string): ArrayBuffer {
 function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
   return buffer.from(arrayBuffer).toString('utf-8')
 }
- ```
+```

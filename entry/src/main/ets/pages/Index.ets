@@ -1,3 +1,7 @@
+/**
+ * 用于演示如何使用 @webabcd/harmony-httpserver
+ */
+
 import { HttpRequest, HttpResponse, httpServer } from '@webabcd/harmony-httpserver'
 import { BusinessError } from '@kit.BasicServicesKit';
 import { http } from '@kit.NetworkKit';
