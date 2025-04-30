@@ -10,10 +10,10 @@
 
 ## API详解
 | 方法 | 介绍 |
-| -- | --- |
+|---|---|
 | start | 启动本地 http server |
 | stop | 停止本地 http server |
-| handleHttpRequest | 处理指定的请求，并响应指定的数据  |
+| handleHttpRequest | 处理指定的请求，并响应指定的数据 |
 
 ## 示例代码
 ```

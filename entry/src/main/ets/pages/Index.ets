@@ -36,6 +36,9 @@ struct Index {
 
   aboutToAppear(): void {
 
+    // 是否启用日志记录（默认开启）
+    httpServer.enableLog(true)
+
     // 处理本地 http 请求
     httpServer.handleHttpRequest((httpRequest:HttpRequest) => {
 
