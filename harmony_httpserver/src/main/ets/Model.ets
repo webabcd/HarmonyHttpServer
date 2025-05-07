@@ -15,6 +15,7 @@ export interface HttpResponse {
 export type RequestAndResponse = (httpRequest:HttpRequest) => HttpResponse;
 export type RequestAndResponseAsync = (httpRequest:HttpRequest) => Promise<HttpResponse>;
 
+// http 响应的状态码（status code）及其对应的文本描述（reason phrase）
 export const HttpStatus: Record<number, string> = {
   // 1xx Informational
   100: 'Continue',
